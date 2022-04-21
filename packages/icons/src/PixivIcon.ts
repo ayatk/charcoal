@@ -1,9 +1,10 @@
 import { html, render } from 'lit-html'
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js'
 import type React from 'react'
+import warning from 'warning'
 import { KnownIconFile } from './filenames'
 import { loaders as defaultLoaders, Loader } from './loaders'
-import { BaseElement } from './ssr'
+import { BaseElement, __SERVER__ } from './ssr'
 const { loadFromFile, loadFromRawUrl } = defaultLoaders
 
 const attributes = ['name', 'scale', 'unsafe-non-guideline-scale'] as const
@@ -41,6 +42,11 @@ export class PixivIcon extends BaseElement {
       ? Record<ExtendedIconFile, string>
       : Record<string, string>
   ) {
+    warning(!__SERVER__, 'Using `PixivIcon.extend()` on server has no effect')
+    if (__SERVER__) {
+      return
+    }
+
     Object.entries(map).forEach(([name, url]) => {
       if (!name.includes('/')) {
         throw new TypeError(
