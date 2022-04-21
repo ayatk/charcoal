@@ -3,6 +3,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js'
 import type React from 'react'
 import { KnownIconFile } from './filenames'
 import { loaders as defaultLoaders, Loader } from './loaders'
+import { BaseElement } from './ssr'
 const { loadFromFile, loadFromRawUrl } = defaultLoaders
 
 const attributes = ['name', 'scale', 'unsafe-non-guideline-scale'] as const
@@ -32,7 +33,7 @@ type Extended = [ExtendedIconFile] extends [never] // NOTE: ExtendedIconFileがn
   ? false
   : true
 
-export class PixivIcon extends HTMLElement {
+export class PixivIcon extends BaseElement {
   static readonly tagName = 'pixiv-icon'
 
   static extend(
